@@ -38,3 +38,5 @@ def neighbor_digits(num, prev_digit=-1):
   #     same_digit[0] = a[i]
 
 # neighbor_digits(1222)
+
+#이 간단한걸 푸는데 6시간이 걸림.,. (22.3.21)
