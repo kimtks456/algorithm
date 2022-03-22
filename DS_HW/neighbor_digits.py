@@ -12,6 +12,7 @@ def neighbor_digits(num, prev_digit=-1):
   4
   """
   # YOUR CODE HERE
+  
   a = str(num)
   cnt = 0
   for i in range(len(a)):
@@ -27,9 +28,7 @@ def neighbor_digits(num, prev_digit=-1):
     elif i == len(a)-1:
       if check == a[i-1]:
         cnt += 1
-        break
-      else:
-        break
+
     else:
       if check == a[i+1] or check == a[i-1]:
         cnt += 1
@@ -38,5 +37,6 @@ def neighbor_digits(num, prev_digit=-1):
         continue
 
   return cnt
+
 
 #이 간단한걸 푸는데 6시간이 걸림.,. (22.3.21)
