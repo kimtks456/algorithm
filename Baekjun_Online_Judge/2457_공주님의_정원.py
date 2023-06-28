@@ -1,41 +1,46 @@
 import sys
-from collections import deque
 read = sys.stdin.readline
+
 
 '''
 반례 모음
 https://www.acmicpc.net/board/view/86573
-
-이렇게 작성하니 매번 정렬하므로 시간 초과.
-(시작, 끝) 모두 오름차순으로 정렬 한번만 한 후, target_end를 땡기는 식으로 접근해야 정렬 안해도됨.
+답
+https://wooono.tistory.com/607
 '''
+
+
 def main():
     n = int(read())
     cases = []
-    target_start, target_end = 301, 1130
+    target_start, target_end = 301, 301
     answer = 0
     for _ in range(n):
         cases.append(tuple(read().split()))
-    cases = deque(conv2num(cases))
+    cases = conv2num(cases)
+    cases = preprocess_and_sort(cases, target_start, 1130)
 
     while len(cases):
-        cases = preprocess_and_sort(cases, target_start, target_end)
-        # print(list(cases), target_start, target_end)
+        # print(cases, target_start, target_end)
         # print(answer)
-        start, end = cases.popleft()
 
-        if start > target_start:
-            print(0)
-            return 0
-
-        if target_start > target_end:
+        if target_end >= 1131 or cases[0][0] > target_end:
             break
 
-        if start <= target_start < end:
-            target_start = end
-            answer += 1
+        temp_target_end = -1
 
-    if target_start < target_end + 1:
+        for _ in range(len(cases)):
+            if cases[0][0] <= target_end:
+                if temp_target_end < cases[0][1]:
+                    temp_target_end = cases[0][1]
+                cases.remove(cases[0])
+            else:
+                break
+
+        target_end = temp_target_end
+        answer += 1
+
+    if target_end <= 1130:
         print(0)
         return 0
 
@@ -52,14 +57,14 @@ def conv2num(cases):
 
 # start, end 날짜 넘어가면 target start, end에 맞춰 변환 및 정렬
 def preprocess_and_sort(cases, target_start, target_end):
-    for i, nums in enumerate(list(cases)):
+    for i, nums in enumerate(cases):
         start, end = nums[0], nums[1]
         if start < target_start:
             start = target_start
         if end > target_end:
             end = target_end + 1
         cases[i] = (start, end)
-    return deque(sorted(cases, key=lambda x: (x[0], -x[1])))
+    return sorted(cases)
 
 def date_form(num):
     if len(num) == 1:
