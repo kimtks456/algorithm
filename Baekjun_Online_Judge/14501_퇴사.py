@@ -6,27 +6,18 @@ read = sys.stdin.readline
 def main():
     n = int(read())
     schedule = []
+    dp = [0 for _ in range(n+1)]
     for _ in range(n):
         t, p = map(int, read().split())
         schedule.append([t, p])
 
-    max_profit = 0
-    for i in range(n):
-        temp_profit = dp(schedule, i, 0)
-        if temp_profit > max_profit:
-            max_profit = temp_profit
+    for i in range(n-1, -1, -1):
+        if schedule[i][0] + i > n:
+            dp[i] = dp[i+1]
+        else:
+            dp[i] = max(dp[i+1], dp[i+schedule[i][0]] + schedule[i][1])
 
-    print(max_profit)
-
-
-def dp(schedule, start_idx, profit):
-    if start_idx + schedule[start_idx][0] > len(schedule):
-        return profit
-    if start_idx + schedule[start_idx][0] == len(schedule):
-        return profit + schedule[start_idx][1]
-
-    return max(dp(schedule, start_idx + schedule[start_idx][0], profit + schedule[start_idx][1]),
-               dp(schedule, start_idx + 1, profit))
+    print(dp[0])
 
 
 main()
