@@ -1,31 +1,16 @@
 import sys
+from heapq import heapify, heappop, heappush
 
 
 n = int(input())
 nums = [int(sys.stdin.readline()) for _ in range(n)]
+heapify(nums)
 answer = 0
-nums.sort(reverse=True)
 
 while len(nums) >= 2:
-     # print(nums)
-     s1, s2 = nums.pop(), nums.pop()
-     temp = s1 + s2
-
-     answer += temp
-
-     i = len(nums) - 1
-     while i >= 0:
-          if nums[i] < temp:
-               i -= 1
-          else:
-               break
-
-     left = nums[:i+1]
-     right = nums[i+1:]
-     nums = left + [temp] + right
-     print(nums)
-
-
+    s1, s2 = heappop(nums), heappop(nums)
+    answer += s1 + s2
+    heappush(nums, s1 + s2)
 print(answer)
 
 '''
