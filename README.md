@@ -8,3 +8,4 @@
 - BINS : Binary Search
 - Graph
 - STPH : Shortest Path
+- SIM : Simulation, 구현
