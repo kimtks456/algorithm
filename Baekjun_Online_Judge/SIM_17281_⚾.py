@@ -37,15 +37,23 @@ def solve():
         hitter_idx = 0
         for inning in innings:
             out = 0
-            base = [0, 0, 0]
+            b1, b2, b3 = 0, 0, 0
             while out < 3:
-                hitter_seq = case[hitter_idx]
-                hit = inning[hitter_seq]
-                if hit == 0:
+                if inning[case[hitter_idx]] == 0:
                     out += 1
+                elif inning[case[hitter_idx]] == 1:
+                    temp_score += b3
+                    b1, b2, b3 = 1, b1, b2
+                elif inning[case[hitter_idx]] == 2:
+                    temp_score += b2 + b3
+                    b1, b2, b3 = 0, 1, b1
+                elif inning[case[hitter_idx]] == 3:
+                    temp_score += b1 + b2 + b3
+                    b1, b2, b3 = 0, 0, 1
                 else:
-                    temp_score += sum(base[3 - (hit if hit < 4 else 3):]) + (hit == 4)
-                    base = [0] * (hit - 1) + [1] * (hit < 4) + base[:3 - (hit if hit < 4 else 3)]
+                    temp_score += b1 + b2 + b3 + 1
+                    b1, b2, b3 = 0, 0, 0
+
                 hitter_idx = (hitter_idx + 1) % 9
                 # print("inning : ", inning)
                 # print(hitter_idx, temp_score, base, out)
