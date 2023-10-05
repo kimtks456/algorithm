@@ -1,5 +1,7 @@
 # 알고리즘 분류 코드
 - DP
+  - LIS : Longest Increasing Subsequence
+  - LCS : Longest Common Subsequence
 - BFS
 - DFS
 - BRTF : Bruteforce
@@ -12,3 +14,4 @@
 - TP : Two Pointer
 - BT : Backtracking
 - Hash
+- String : 문자열 관련
