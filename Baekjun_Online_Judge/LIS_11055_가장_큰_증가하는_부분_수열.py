@@ -4,7 +4,6 @@ nums = list(map(int, input().split()))
 dp = nums[:]
 
 for i in range(n):
-    temp = 0
     for j in range(i):
         if nums[i] > nums[j]:
             dp[i] = max(dp[i], dp[j] + nums[i])
