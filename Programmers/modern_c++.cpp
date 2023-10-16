@@ -25,10 +25,14 @@ int main()
     int * pm = &m;
     vector<vector<int>> mat = vector<vector<int>>();
     priority_queue<int> q;
-    
-    cout << string::npos << "\n";
-    auto a = n;
+    int a[10];
+    char b[10];
+    char* c;
 
+    *(a + 4) = 100;
+
+    
+    // cout << string::npos << "\n";
     
     return 0;
 }
