@@ -67,3 +67,17 @@
 - Pointer
   - int\*과 char\*의 차이점 : 포인터 연산에서 차이 있음.
     - 포인터 변수 + 1면하면 전자는 4 byte, 후자는 1 byte씩 이동. 그래서 int, char형 배열에 대해 + 1씩하면 다음 원소 접근가능
+
+- 입출력 빠르게
+  1. 입력
+
+      ```cpp
+      ios_base::sync_with_stdio(false);
+      cin.tie(NULL);
+      cout.tie(NULL);
+      ```
+    - 멀티 쓰레드환경에서 sync를 false하면 thread unsafe라 문제 생김.근데 대부분의 PS는 signle thread니까 가능.
+    - (prinft, scanf)랑은 혼용해서 쓰면 안됨. thread unsafe되니까.
+  2. 출력
+    - endl보단 "\n"로 출력.
+    
