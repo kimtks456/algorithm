@@ -5,9 +5,22 @@
     - reverse : iterator만 입력받으면 뒤집음.
   - \<utility>
     - _pair 구조체 (pair는 utility 임포트 안해도됨 기본적으로 있음)_
+  - \<cstdlib>
+    - 
   - \<string>
   - \<tuple> 
     - tuple 클래스 사용
+    - 보통은 아래와 같이 사용하므로 tuple 잘 안씀
+      ```cpp
+      pair<int, int> p1;
+      pair<pair<int, int>, int> p2;
+      
+      p1 = {1, 2};
+      p2 = {p1, 3};
+      int a, b, c;
+
+      ```
+  - 
 
 ### Data Structures
 
