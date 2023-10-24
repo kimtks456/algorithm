@@ -146,7 +146,7 @@
 
 
 - 메모리 구조
-  ![Alt text](image.png)
+  ![Alt text](memo/image.png)
   - const : ROM에 할당되므로 자주 호출되면 memory가 아니니 느려짐.
   - #define : 전처리기 중 하나이므로 compoile시 치환됨. 
     - 함수는 호출될때마다 memory에 있는 stack frame이라는 공간을 
