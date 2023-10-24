@@ -26,13 +26,36 @@
 # C++ Tips
 ### Headers
   - \<iomanip> : io manipulator 
-    - std:setprecision() 함수를 통해 cout의 default 정밀도를 재정의 
+    - std:setprecision() 함수를 통해 cout의 default 정밀도를 재정의.
+      
+      이걸로 안해도됨. 추가적인 header 필요 없이 ```cout```에서 설정 가능.
+      
+      ```cpp
+      cout<<fixed; // 이거 해야 소수점 아래로만 precision 고정. 안하면 소숫점 위, 아래 포함 3자리임.
+      cout.precision(3); // 소수 아래 3자리만 출력.
+      ```   
   - \<algorithm> 
     - min, max
-    - reverse : iterator만 입력받으면 뒤집음.
+    - ```reverse(str.begin(), str.end())``` : string 뿐만 아니라 container들 다 사용 가능. iterator 넣어주면 됨. return 없음.
     - fill_n(arr, size, value) : 해당 arr의 size만큼을 value로 초기화
   - \<utility>
     - _pair 구조체 (pair는 utility 임포트 안해도됨 기본적으로 있음)_
+  - \<vector> [참고](https://blockdmask.tistory.com/70)
+    ```cpp
+    vector<int> v(3); // 0이 3개
+    vector<int> v(3, -1); // -1이 3개
+    vector<vector<int>> v(10, vector<int>(5, -1)); // -1로 10행 5열
+
+    v.front(); 
+    v.back();
+    v.push_back(7);
+    v.pop_back();
+    v.erase(iter);
+    vector<int>::iterator iter;
+    for (iter = v.begin(); iter != v.end(); iter++) {
+      cout << *iter << " ";
+    }
+    ```
   - \<cstdlib>
     - atof, atol, atoi : 문자열 -> double, long, int 형으로 변환
       - 근데 string header의 stoi가 더 빠름. C++11 이전이면 atoi 써야함.
@@ -49,10 +72,32 @@
     - abs, div : 절대값, 정수 나눗셈. abs 쓸거면 cmath header를 import
   - \<cmath>
     - ```abs(val)```
+    - ```ceil(x), floor(x)``` : double 반환
+    - ```log10(double)``` : 밑이 10인 로그값을 double로 반환
+    - ```log(double)``` : 밑이 e인 로그값 double 반환
+    - ```pow(x, y)``` : x ^ y 값 double 반환
+    - ```sqrt(x)```
   - \<string>
-    - 길이 구하기 : ```string.size() or string.length()``` 아래와 같은 차이점이 있긴 하지만 같은 값. capacity만 아니면 됨.
+    - __생성자 주의 ```string str(char[])``` : char배열의 맨 끝을 알리는 \0까지 string에 포함되어 생성됨. 그러므로 string 초기화시 생성자를 이용할때는 주의!!!__
+    - ```size()``` 길이 구하기 : ```string.size() or string.length()``` 아래와 같은 차이점이 있긴 하지만 같은 값. capacity만 아니면 됨.
       - size() : 해당 string 객체가 사용하고있는 메모리 크기
       - length() : 문자열 길이
+
+    - ```str.substr(pos, count)``` 부분 문자열 : count 만큼 pos에서부터 자르기.
+    - ```str.erase(pos, count)``` 삭제 : pos부터 count만큼 지움.
+    - Tokenizing : strtok() 함수 사용해도 됨. 
+        ```cpp
+        string line = "I am who I am and I have the need to be.";
+        string delim = " ";
+        vector<string> words{};
+
+        size_t pos = 0;
+        while ((pos = line.find(delim)) != string::npos)
+        {
+            words.push_back(line.substr(0, pos));
+            line.erase(0, pos + delim.length());
+        }
+        ```
     - ```getline(cin, string)``` : 주어진 입력의 길이, 공백 상관없이 모든 문자열 받는 방법.
     - string::npos : ```string.find(target, start_idx)```에서 해당 위치 못찾으면 반환하는 -1 값 가지는 상수.
       - ```cout << std::npos``` 하면 ```std:npos가 static const size_t npos = -1```로 정의돼있어 unsigned인 size_t에 의해 -1이 unsigned long long의 max 값인 ```ULONG_MAX```, 1.8e19로 출력됨.
@@ -78,6 +123,11 @@
 
 
 ### C++ 언어 특성
+- 비교 연산자
+  - ```==``` : 메모리 주소가 동일한지 비교
+  - ```str1.compare(str2)``` : 문자열끼리 비교. 같으면 0, 다르면 -1 반환.
+
+
 - 사칙 연산
   - division operator : ```/```
     - 연산 결과는 분모의 자료형을 따라간다.
@@ -88,6 +138,7 @@
     c = a / b; // 0. b가 int라서 division의 결과도 int형
     c = a / 4.; // 0.75
     ```
+
 
 - 자료형
   - 중괄호 초기화 : ```int num{ 1 };``` 이렇게 중괄호로 초기화하는게 가장 현대적이고 이점이 있음. [참고](suji8448@naver.com) 
