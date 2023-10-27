@@ -25,15 +25,53 @@
 
 # C++ Tips
 ### Headers
-  - \<iomanip> : io manipulator 
-    - std:setprecision() 함수를 통해 cout의 default 정밀도를 재정의.
-      
-      이걸로 안해도됨. 추가적인 header 필요 없이 ```cout<<fixed, cout.precision(3);```에서 설정 가능.
-      
+  - \<map>
+    - map이 Red-Black Tree 구조라서 순회할때 중위 순회로 출력됨. 
+
+      그래서 insert, erase마다 정렬이 일어나 search는 빨라도 삽입, 삭제는 느려짐.
+    - 키 값 분포가 고르지 못하면 balancing 비용으로 성능 저하 가능.
+
+      ```unordered_map```은 hash_table 기반이라 O(1). 물론 해시충돌 일어나면 O(n).
       ```cpp
-      cout<<fixed; // 이거 해야 소수점 아래로만 precision 고정. 안하면 소숫점 위, 아래 포함 3자리임.
-      cout.precision(3); // 소수 아래 3자리만 출력.
-      ```   
+      map<string, int> mp;
+      mp["hi"] = 4; // insert 해도 됨.
+      mp.insert({"hi", 4});
+      mp.size();
+      mp.erase("hi");
+      auto it = mp.find("hi");
+      if (it == mp.end()) {
+        // not contain 확인
+      }
+
+      // 중위 순회
+      for (map<string, int>::iterator i = mp.begin(); i != mp.end(); i++) {
+        cout << i->first;
+      }
+      ```
+
+    - map을 vector로 : 복사 생성자 사용
+
+        ```cpp
+        vector<pair<string, int>> v = { {"12", 1}, {"123", 2} };
+        map<string, int> mp(v.begin(), v.end());
+        ```
+    - vector를 map으로 : 복사 생성자 사용
+
+        ```cpp
+        map<string, int> mp;
+        vector<pair<string, int>> v(mp.begin(), mp.end());
+        ```
+
+
+  - \<set>
+    ```cpp
+    std::set<int> s;
+    s.count(k); // 원소 k의 개수 
+    s.insert(k); // return으로 pair<iter, bool> 나옴. 성공시 bool = true.
+    s.erase(iter); // 제거하고 다음 원소 가리키는 iter 반환
+    s.find(k); // k원소 가리키는 iter. 없다면 s.end() 반환.
+    s.size(); 
+    ```
   - \<algorithm> 
     - 깊은 복사 : ```std::copy(dest.begin(), dest.end(), source.begin())```
 
@@ -48,6 +86,9 @@
       // vector 초기화
       vector<int> v(8);
       fill(v.begin(), v.end(), 1);
+      vector<vector<int>> a(10, vector<int>(10, 1)); // 1로 초기화된 10x10
+      vector<pair<int, int>> a[10]; // 0으로 초기화된 pair 벡터들의 배열
+      // a[0].push_back({1, 1});
 
       // 배열 초기화 
       int a[8]{ 0, };
@@ -83,13 +124,14 @@
         // // 틀림
         void initArr(int arr[]) {
             for(int i = 0; i < sizeof(arr)/sizeof(*arr); i++) arr[i] = 0;
-        } // 원소 전부를 전달할 수 없음. 결국 배열 첫인자의 주소를 줘야함.
+        } // 배열의 첫 주소만 전달됨. 그래서 길이를 알 수 없다.
 
         // // 맞음
         void initArr2(int *arr, int size) {
             for(int i = 0; i < size; i++) arr[i] = 0;
         }
         ```
+
     - ```sort(v.begin(), v.end(), compare)``` : quick sort의 단점인 worst case에 O(N^2)인거를 고쳐서 O(nlogn) 보장. 비교함수 안주면 오름차순 정렬.
 
       ```cpp
@@ -98,9 +140,63 @@
       ```
     - min, max
     - ```reverse(str.begin(), str.end())``` : string 뿐만 아니라 container들 다 사용 가능. iterator 넣어주면 됨. return 없음.
-    - fill_n(arr, size, value) : 해당 arr의 size만큼을 value로 초기화
+
+  - \<queue>
+    ```cpp
+    #include <iostream>
+    #include <queue>
+    #include <functional>    // greater, less
+    using namespace std;
+    int main() {
+        priority_queue<int> pq;  // - >  priority_queue<int, vector<int>, less<int>> pq;
+    
+        // 우선순위 큐에 원소를 삽입 (push) 한다 
+        pq.push(4);
+        pq.push(1);
+        pq.push(10);
+    
+        cout << "우선순위 큐 사이즈 : " << pq.size() << "\n";
+        // 우선순위 큐가 비어 있지 않다면 while 문을 계속 실행
+        while (!pq.empty()) {
+            cout << pq.top() << '\n';
+            pq.pop();
+        }
+        return 0;
+    }
+
+    struct Student { // 대문자로 시작하는거 주의 !!!
+        int id;
+        int math, eng;
+        Student(int num, int m, int e) : id(num), math(m), eng(e) {}    // 생성자 정의
+
+        // 그냥 점수에 상관 없이 학번기준 학번이 작은것이 Top 을 유지 한다
+        bool operator<(const Student s) const {
+            return this->id > s.id;
+        }
+    }; // 세미콜론(;) 붙이는거 주의 !!!
+    
+    int main() {
+        priority_queue<Student> pq;  
+    
+        pq.push(Student(3, 100, 50));
+        pq.push(Student(4, 90, 50));
+        pq.push(Student(5, 70, 40));
+        
+    // 학번을 기준으로 작은 것이 먼저 출력이 된다 그 이유는 구조체 내부의 연산자 오버로딩에 있다
+        while (!pq.empty()) {
+            Student ts = pq.top(); pq.pop();
+            cout << "(학번, 수학 , 영어 ) : " << ts.id << ' ' << ts.math << ' ' << ts.eng << '\n';
+        }
+    
+        return 0;
+    }
+    ```
+
+
   - \<utility>
-    - _pair 구조체 (pair는 utility 임포트 안해도됨 기본적으로 있음)_
+    - pair 구조체 (pair는 vector 헤더에 포함이라 보통 vector 헤더 포함해두기에 별도 import 필요 없음)
+
+
   - \<vector> [참고](https://blockdmask.tistory.com/70)
     ```cpp
     vector<int> v(3); // 0이 3개
@@ -131,6 +227,8 @@
         ```
     - calloc, malloc, free
     - abs, div : 절대값, 정수 나눗셈. abs 쓸거면 cmath header를 import
+
+
   - \<cmath>
     - ```abs(val)```
     - ```ceil(x), floor(x)``` : double 반환
@@ -138,6 +236,8 @@
     - ```log(double)``` : 밑이 e인 로그값 double 반환
     - ```pow(x, y)``` : x ^ y 값 double 반환
     - ```sqrt(x)```
+
+
   - \<string>
     - __생성자 주의 ```string str(char[])``` : char배열의 맨 끝을 알리는 \0까지 string에 포함되어 생성됨. 그러므로 string 초기화시 생성자를 이용할때는 주의!!!__
     - ```size()``` 길이 구하기 : ```string.size() or string.length()``` 아래와 같은 차이점이 있긴 하지만 같은 값. capacity만 아니면 됨.
@@ -167,6 +267,17 @@
     - int -> string : ```string st = to_string(100)```
     - string -> int : ```stoi(st)```
 
+
+  - \<iomanip> : io manipulator 
+    - std:setprecision() 함수를 통해 cout의 default 정밀도를 재정의.
+      
+      이걸로 안해도됨. 추가적인 header 필요 없이 ```cout<<fixed, cout.precision(3);```에서 설정 가능.
+      
+      ```cpp
+      cout<<fixed; // 이거 해야 소수점 아래로만 precision 고정. 안하면 소숫점 위, 아래 포함 3자리임.
+      cout.precision(3); // 소수 아래 3자리만 출력.
+      ```   
+
   - \<tuple> 
     - tuple 클래스 사용
     - 보통은 아래와 같이 사용하므로 tuple 잘 안씀
@@ -178,10 +289,18 @@
       p2 = {p1, 3};
       int a, b, c;
       ```
-  - 
 
 ### Data Structures
+- Hash
+  - hash function
 
+    \<functional>
+
+    ```std::hash<datatype>```
+
+
+
+    
 
 ### C++ 언어 특성
 - 비교 연산자
@@ -277,6 +396,61 @@
     - 따라서 간단한 함수들은 macro로 만들어 사용해 stack frame 차지를 줄이자.
 
 
+- Call by reference
+  - reference의 의미
+    - 이미 존재하는 변수에 대해 다른 이름을 선언하는 것. 기존 변수를 공유함. 
+    그래서 구조체 레퍼런스는 그냥 (.)으로 바로 접근할 수 있는 것임.
+
+  - Array : 3가지 방법
+    ```cpp
+    int a[3] = {1, 2, 3}; 
+    void go(int a[]){
+      a[2] = 100; 
+    } 
+    void go2(int a[3]){ 
+      a[2] = 1000;
+    } // 이것도..
+    void go3(int *a){ 
+      a[2] = 10000;
+    }
+
+    int main(){
+    go(a); cout << a[2] << '\n'; 
+    go2(a); cout << a[2] << '\n'; 
+    go3(a); cout << a[2] << '\n';
+    }
+
+    /*
+    100
+    1000
+    10000
+    */
+    ```
+  
+  - Structure 
+    ```cpp
+    struct Car 
+    {
+      int num;
+      double gas;
+    } 
+
+    void Show(Car& c);
+
+    int main() {
+
+    }
+
+    void Show(Car& c) {
+      cout << c.num << c.gas;
+    }
+
+    void Show2(Car* c) {
+      cout << c->num << c->gas << (*c).num; 
+    } // 구조체 포인터면 멤버 접근시 화살표로. 아님 역레퍼런스(*)
+    ```
+
+
 - Array
   - 할당 가능한 크기 : 보통 int 기준 100000, 10^5 정도. 10^6은 SEGMENTATION FAULT 발생. 범위 벗어난 메모리 참조하려는 에러.<br>
     -> vector 이용해서 할당받아야함.
@@ -286,7 +460,18 @@
   - 초기화
     - 지역 변수 : ```int arr[3];``` 사이즈만 지정하면 0으로 초기화되는줄 알았는데, 직접 해보니 아님. ```int arr[3] = { 0, };``` 이렇게 초기화. {-1,} 이렇게 하면 첫 원소만 -1로 초기화됨. 위험.
 
-      0 말고 다른수로 초기화 하려면 \<algorithm\> header의 ```std::fill_n(arr, size, value)``` 사용
+      0 말고 다른수로 초기화 하려면 \<algorithm\> header의 ```std::fill_n(arr, 변경하려는 개수, value)``` 사용
+
+      ```std::fill(start address, end address, value)``` 이거로 통일.
+
+      ```cpp
+      int arr[5][5];
+      fill(arr[0], arr[0] + 25, 1);
+      // 또는
+      fill(&arr[0][0], &arr[4][5], 1);
+      ```
+
+
     - 동적 할당
       - new 사용 : ```int * arr = new int[5]``` 이렇게 동적 할당 가능.
 
@@ -431,7 +616,7 @@
       return a.value;
   }
 
-  int functionB(Animal& a) {
+  int functionB(Animal &a) {
       a.value = a.value * 2;
       return a.value;
   }
