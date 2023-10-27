@@ -28,13 +28,74 @@
   - \<iomanip> : io manipulator 
     - std:setprecision() 함수를 통해 cout의 default 정밀도를 재정의.
       
-      이걸로 안해도됨. 추가적인 header 필요 없이 ```cout```에서 설정 가능.
+      이걸로 안해도됨. 추가적인 header 필요 없이 ```cout<<fixed, cout.precision(3);```에서 설정 가능.
       
       ```cpp
       cout<<fixed; // 이거 해야 소수점 아래로만 precision 고정. 안하면 소숫점 위, 아래 포함 3자리임.
       cout.precision(3); // 소수 아래 3자리만 출력.
       ```   
   - \<algorithm> 
+    - 깊은 복사 : ```std::copy(dest.begin(), dest.end(), source.begin())```
+
+      - [memcpy의 메모리 Overlap 현상](https://wonillism.tistory.com/160) -> memmove 이용해야함.
+      - 왜 ```std::copy``` 썼냐?
+
+        1. memcpy는 memory overlap 현상 존재. 또한 vector는 복사 못함. 배열만 복사 가능.
+        2. for 문으로 직접 변환하는 것보다 std::copy가 더 빠르다는 결과를 봤음. 물론 함수 호출의 overhead가 있겠지만, 개수가 많아질수록 함수호출이 차지하는 overhead 비율이 작아질 것이므로 std::copy를 사용.
+    - 초기화 : ```fill(iter, iter, value)```
+
+      ```cpp
+      // vector 초기화
+      vector<int> v(8);
+      fill(v.begin(), v.end(), 1);
+
+      // 배열 초기화 
+      int a[8]{ 0, };
+      fill(a, a + sizeof(a)/sizeof(int), 1);
+      ```
+
+      - 배열의 직접 초기화 예시
+
+        ```cpp
+        #include<iostream>
+        #include<algorithm>
+
+        using namespace std;
+
+        void initArr(int arr[]);
+        void initArr2(int* arr, int size);
+
+        int main() {
+            int T, C;
+            int answer[4]{ 0, };
+
+            cin >> T;
+            answer[0] = 100;
+            // 1. 틀림
+            initArr(answer);
+            // 2. 직접 초기화
+            initArr2(answer, sizeof(answer)/sizeof(*answer));
+            // 3. fill 함수 사용
+            fill(answer, answer + sizeof(answer)/sizeof(*answer), 1);
+            for(int i = 0; i < 4; i++) cout << answer[i];;
+        }
+
+        // // 틀림
+        void initArr(int arr[]) {
+            for(int i = 0; i < sizeof(arr)/sizeof(*arr); i++) arr[i] = 0;
+        } // 원소 전부를 전달할 수 없음. 결국 배열 첫인자의 주소를 줘야함.
+
+        // // 맞음
+        void initArr2(int *arr, int size) {
+            for(int i = 0; i < size; i++) arr[i] = 0;
+        }
+        ```
+    - ```sort(v.begin(), v.end(), compare)``` : quick sort의 단점인 worst case에 O(N^2)인거를 고쳐서 O(nlogn) 보장. 비교함수 안주면 오름차순 정렬.
+
+      ```cpp
+      // 배열 정렬
+      sort(a, a+100);
+      ```
     - min, max
     - ```reverse(str.begin(), str.end())``` : string 뿐만 아니라 container들 다 사용 가능. iterator 넣어주면 됨. return 없음.
     - fill_n(arr, size, value) : 해당 arr의 size만큼을 value로 초기화
@@ -54,7 +115,7 @@
     vector<int>::iterator iter;
     for (iter = v.begin(); iter != v.end(); iter++) {
       cout << *iter << " ";
-    }
+    } // v.end()는 마지막 원소보다 한 칸 뒤 위치 반환
     ```
   - \<cstdlib>
     - atof, atol, atoi : 문자열 -> double, long, int 형으로 변환
@@ -198,6 +259,16 @@
 
 - 메모리 구조
   ![Alt text](memo/image.png)
+
+  - Stack : 지역 변수, 함수, 매개변수. 따라서 ```compile time```에도 크기 결정되고, ```run time```에도 크기 변경됨.
+  - Heap : 동적 할당(malloc)으로 할당된 변수. ```run time```에 결정. 
+
+    ```vector```가 내부적으로 heap 사용.
+  - Data Section(Data segment, BSS(Block Started by Symbol) segment)
+    - data segment : 0이나 NULL 아닌 값으로 초기화된 전역/static 변수
+    - BSS segment : 초기화되지 않거나, 0, NULL로 초기화된 전역/static 변적. 굳이 이 둘을 구분한 것은 임베디드는 작은 ROM안에 프로그램 넣어야하는데 초기화되지 않은 BSS segment의 녀석들은 초기화된 값을 저장할 필요 없으니 그냥 이 변수가 있다!만 알려주면 되서 프로그램 용량 작아지는 효과.
+  - Text(Code) Section : 코드들
+
   - const : ROM에 할당되므로 자주 호출되면 memory가 아니니 느려짐.
   - #define : 전처리기 중 하나이므로 compoile시 치환됨. 
     - 함수는 호출될때마다 memory에 있는 stack frame이라는 공간을 
@@ -239,7 +310,7 @@
 - Pointer
   - int\*과 char\*의 차이점 : 포인터 연산에서 차이 있음.
     - 포인터 변수 + 1면하면 전자는 4 byte, 후자는 1 byte씩 이동. 그래서 int, char형 배열에 대해 + 1씩하면 다음 원소 접근가능
-
+  - pointer의 크기는 32bit면 4B, 64bit면 8B로 고정! 자료형에 상관없이! 왜냐면 주소의 크기만 담으면 되니까 컴터의 최대 비트수가 표현가능한 주소의 범위니까.
   - ```datatype* const```와 ```const datatype*``` 차이점
     - 전자 : pointer가 가리키는 주소를 고정. 즉, 다른 변수의 주소를 가리킬 수 없음.
       ```cpp

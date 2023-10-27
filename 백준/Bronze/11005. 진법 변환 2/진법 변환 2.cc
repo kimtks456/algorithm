@@ -2,6 +2,7 @@
 #include <string>
 #include <algorithm>
 using namespace std;
+
 char isOverTen(int);
 
 int main() {

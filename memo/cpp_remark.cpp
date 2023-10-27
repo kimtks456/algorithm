@@ -1,8 +1,9 @@
 #include <iostream>
 #include <string>
 #define fastio() cin.tie(0), cout.tie(0), ios_base::sync_with_stdio(0)
-
 using namespace std;
+
+char isOverTen(int);
 
 int main() {
     fastio();
@@ -16,6 +17,12 @@ int main() {
     /* 자주 쓸만한 함수 모음 */
     while ((pos = str.find(word[i], pos)) != string::npos) {
     str.erase(pos, word[i].size());
+
+    /* auto : 긴 타입을 짧게 표현 */
+    vector<pair<int, int>> v;
+    for (auto it : v) {
+        cout << it.first << " : " << it.second << '\n';
+    }
 
 
     cin >> str;
