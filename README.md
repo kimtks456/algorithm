@@ -49,13 +49,13 @@
       }
       ```
 
-    - map을 vector로 : 복사 생성자 사용
+    - vector map으로 : 복사 생성자 사용
 
         ```cpp
         vector<pair<string, int>> v = { {"12", 1}, {"123", 2} };
         map<string, int> mp(v.begin(), v.end());
         ```
-    - vector를 map으로 : 복사 생성자 사용
+    - map을 vector로 : 복사 생성자 사용
 
         ```cpp
         map<string, int> mp;
@@ -138,17 +138,65 @@
       // 배열 정렬
       sort(a, a+100);
       ```
+
+      - 구조체 정렬
+      ```cpp
+      struct Point {
+        int x, y;
+        Point(int x, int y) : x(x), y(y){}
+        Point(){ x = 1; y = 1; }
+
+        bool operator < (const Point& a) const{
+          if (x == a.x) return y < a.y;
+          return x < a.x;
+        }
+      };
+
+      vector<Point> v;
+      v.push_back(Point(1, 2));
+
+      ```
+      - struct와 class의 차이
+
+        struct의 멤버변수는 기본이 public & 상속 안됨. class의 멤버변수는 private이고 상속 가능.
+
+
     - min, max
     - ```reverse(str.begin(), str.end())``` : string 뿐만 아니라 container들 다 사용 가능. iterator 넣어주면 됨. return 없음.
 
+
+  - \<stack>
+    ```cpp
+    stack<int> st;
+    st.push(1);
+    st.pop();
+    st.size();
+    st.top(); // 맨 위
+    ```
+
+
   - \<queue>
+
+    queue
+    ```cpp
+    queue<int> q;
+    q.push(1);
+    q.pop();
+    q.front();
+    q.back();
+    q.size();
+    q.empty();
+    ```
+
+    priority queue
     ```cpp
     #include <iostream>
     #include <queue>
     #include <functional>    // greater, less
     using namespace std;
     int main() {
-        priority_queue<int> pq;  // - >  priority_queue<int, vector<int>, less<int>> pq;
+        priority_queue<int> pq;  
+        // - >  priority_queue<int, vector<int>, less<int>> pq;
     
         // 우선순위 큐에 원소를 삽입 (push) 한다 
         pq.push(4);
@@ -163,6 +211,11 @@
         }
         return 0;
     }
+    ```
+
+
+    구조체 PQ
+    ```cpp
 
     struct Student { // 대문자로 시작하는거 주의 !!!
         int id;
@@ -190,8 +243,28 @@
     
         return 0;
     }
+
+    // 방법 2. 구조체 comparator
+    struct Student {
+      int id, math;
+      Student(int id, int math) : id(id), math(math) {}
+    };
+
+    struct cmp {
+      bool operator()(Student a, Student b) {
+        return a.id < b.id; // 들어온게 더 크면 true로 바꾼다 -> max heap
+      }
+    };
+
+    priority_queue<Student, vector<Student>, cmp> pq;
+    pq.push(Student(10, 10));
+    pq.top(); pq.pop();
     ```
 
+
+  - \<functional>
+    - ```hash(datatype)``` : hash값 반환
+    - ```greater<int>, less<int>``` : PQ에서 max, min heap 시 넣어줘야할 __구조체 comparator__.
 
   - \<utility>
     - pair 구조체 (pair는 vector 헤더에 포함이라 보통 vector 헤더 포함해두기에 별도 import 필요 없음)
@@ -634,4 +707,14 @@
       return 0;
   } 
   ```
-    
+
+
+- lvalue, rvalue [참고](https://younggwan.tistory.com/49)
+  - lvalue : 명확한 메모리 주소 갖고 있어, 값을 받을 수 있음.
+  - rvaleu : 잠깐? 사용하고 사라지는 임시값. lvalue에 값을 전해줄 수 있으면 됨.
+  - lvalue는 대입연산자(=) 양쪽 모두 올 수 있으나, rvalue는 오른쪽에만 올 수 있음.
+
+    ```cpp
+    int a = 10; //a는 주소 있으니 lvalue
+    10 = a; // rvalue를 왼쪽에 못씀.
+    ```
