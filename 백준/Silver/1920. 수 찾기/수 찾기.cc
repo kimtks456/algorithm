@@ -6,10 +6,11 @@ using namespace std;
 int BinarySearch(const vector<int>& arr, int v);
 
 int main() {
+    cin.tie(0);
+    ios_base::sync_with_stdio(0);
+    
     int n, m, temp;
     vector<int> num;
-    vector<int> target;
-    vector<int> result;
 
     cin >> n;
     for (int i = 0; i < n; i++) {
@@ -17,40 +18,12 @@ int main() {
         num.push_back(temp);
     }
 
+    sort(num.begin(), num.end());
+
     cin >> m;
     for (int i = 0; i < m; i++) {
         cin >> temp;
-        target.push_back(temp);
-    }
-
-    sort(num.begin(), num.end());
-
-    int l, r, mid;
-    for (int item : target) {
-        // // Binary Search
-        // l = 0;
-        // r = n - 1;
-
-        // while (l <= r) {
-            // mid = (l + r) / 2;
-            // if (num[mid] < item) {
-                // l = mid + 1;
-            // } else if (num[mid] > item) {
-                // r = mid - 1;
-            // } else {
-                // result.push_back(1);
-                // break;
-            // }
-        // } 
-
-        // if (num[mid] != item) {
-            // result.push_back(0);
-        // }
-        cout << BinarySearch(num, item) << '\n';
-    }
-
-    for (int& item : result) {
-        cout << item << '\n';
+        cout << BinarySearch(num, temp) << '\n';
     }
 
     return 0;
