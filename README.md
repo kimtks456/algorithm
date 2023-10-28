@@ -13,7 +13,10 @@
 - SIM : Simulation, 구현
 - TP : Two Pointer
 - BT : Backtracking
-- Hash
+- Hash 
+  
+  (** hash가 항상 빠르지 않음. hashing 오버헤드로 이분탐색이 더 빠를 수 있음)
+  
 - String : 문자열 관련
 
 
@@ -73,6 +76,9 @@
     s.size(); 
     ```
   - \<algorithm> 
+    - 순열, 조합 [참고](https://mjmjmj98.tistory.com/38)
+      ```cpp
+      ```
     - 깊은 복사 : ```std::copy(dest.begin(), dest.end(), source.begin())```
 
       - [memcpy의 메모리 Overlap 현상](https://wonillism.tistory.com/160) -> memmove 이용해야함.
@@ -181,7 +187,7 @@
     ```cpp
     queue<int> q;
     q.push(1);
-    q.pop();
+    q.pop(); // 반환값 없음. 받으려면 front로 받아둬야함.
     q.front();
     q.back();
     q.size();
@@ -192,7 +198,7 @@
     ```cpp
     #include <iostream>
     #include <queue>
-    #include <functional>    // greater, less
+    #include <functional>    // greater, less 알고리즘 헤더에도 있음
     using namespace std;
     int main() {
         priority_queue<int> pq;  
@@ -223,7 +229,8 @@
         Student(int num, int m, int e) : id(num), math(m), eng(e) {}    // 생성자 정의
 
         // 그냥 점수에 상관 없이 학번기준 학번이 작은것이 Top 을 유지 한다
-        bool operator<(const Student s) const {
+        bool operator<(const Student s) const { 
+          // const 멤버 함수 : operator< 함수가 내부적으로 this를 통해 원래 객체를 수정 못하게. 참조만하게.
             return this->id > s.id;
         }
     }; // 세미콜론(;) 붙이는거 주의 !!!
@@ -244,7 +251,7 @@
         return 0;
     }
 
-    // 방법 2. 구조체 comparator
+    // 방법 2. cmp 구조체
     struct Student {
       int id, math;
       Student(int id, int math) : id(id), math(math) {}
@@ -266,6 +273,8 @@
     - ```hash(datatype)``` : hash값 반환
     - ```greater<int>, less<int>``` : PQ에서 max, min heap 시 넣어줘야할 __구조체 comparator__.
 
+      \<algorithm> 헤더에도 있음.
+
   - \<utility>
     - pair 구조체 (pair는 vector 헤더에 포함이라 보통 vector 헤더 포함해두기에 별도 import 필요 없음)
 
@@ -281,6 +290,8 @@
     v.push_back(7);
     v.pop_back();
     v.erase(iter);
+    v.erase(v.begin()+1,v.begin()+2); 
+    // 범위 설명 : 1번 인덱스 ~ 2번 인덱스 전 -> 즉 1번 인덱스 값 하나만 해당 
     vector<int>::iterator iter;
     for (iter = v.begin(); iter != v.end(); iter++) {
       cout << *iter << " ";

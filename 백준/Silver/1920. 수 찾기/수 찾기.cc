@@ -6,6 +6,8 @@ using namespace std;
 int BinarySearch(const vector<int>& arr, int v);
 
 int main() {
+    // 이거 안하니 시간초과. 
+    // 근데 한번에 input 받고, 한번에 출력하면 이거 안해도 시간초과 안남.
     cin.tie(0);
     ios_base::sync_with_stdio(0);
     
