@@ -27,28 +27,28 @@ int main() {
 
     int l, r, mid;
     for (int item : target) {
-        // Binary Search
-        l = 0;
-        r = n - 1;
+        // // Binary Search
+        // l = 0;
+        // r = n - 1;
 
-        while (l <= r) {
-            mid = (l + r) / 2;
-            if (num[mid] < item) {
-                l = mid + 1;
-            } else if (num[mid] > item) {
-                r = mid - 1;
-            } else {
-                result.push_back(1);
-                break;
-            }
-        } 
+        // while (l <= r) {
+            // mid = (l + r) / 2;
+            // if (num[mid] < item) {
+                // l = mid + 1;
+            // } else if (num[mid] > item) {
+                // r = mid - 1;
+            // } else {
+                // result.push_back(1);
+                // break;
+            // }
+        // } 
 
-        if (num[mid] != item) {
-            result.push_back(0);
-        }
+        // if (num[mid] != item) {
+            // result.push_back(0);
+        // }
+        cout << BinarySearch(num, item) << '\n';
     }
 
-        // cout << BinarySearch(num, temp) << '\n';
     for (int& item : result) {
         cout << item << '\n';
     }
