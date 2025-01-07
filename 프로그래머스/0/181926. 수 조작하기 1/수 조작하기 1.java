@@ -5,7 +5,7 @@ class Solution {
         AtomicInteger result = new AtomicInteger(n); // 가변 객체 사용
         control.chars()
             .forEach(c -> {
-                switch ((char) c) {
+                switch (c) {
                     case 'w':
                         result.addAndGet(1); // n += 1
                         break;
