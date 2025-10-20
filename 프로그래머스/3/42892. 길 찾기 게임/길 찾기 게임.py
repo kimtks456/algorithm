@@ -29,11 +29,23 @@ class Tree:
                     break
             
     def preorder(self, node, result):
-        result.append(node.num)
-        if node.left:
-            self.preorder(node.left, result)
-        if node.right:
-            self.preorder(node.right, result)
+        stack = [node]
+        
+        while stack:
+            now = stack.pop()
+            if now:
+                result.append(now.num)
+                # stack은 LIFO이므로 오른쪽 쌓고, 왼쪽 쌓아야 왼쪽 pop
+                if now.right:
+                    stack.append(now.right)
+                if now.left:
+                    stack.append(now.left)
+        
+        # result.append(node.num)
+        # if node.left:
+        #     self.preorder(node.left, result)
+        # if node.right:
+        #     self.preorder(node.right, result)
         return result
     
     def postorder(self, node, result):
