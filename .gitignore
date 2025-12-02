@@ -5,3 +5,9 @@ tempCodeRunnerFile.cpp
 test.cpp
 memo/cpp_template_SangYeob.cpp
 test
+
+# Gradle
+javatest/.gradle/
+javatest/build/
+# 동일버전 gradle 빌드 위함
+!gradle/wrapper/gradle-wrapper.jar
