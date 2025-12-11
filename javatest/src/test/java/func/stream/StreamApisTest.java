@@ -1,4 +1,4 @@
-package org.stream;
+package func.stream;
 
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;

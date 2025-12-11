@@ -1,4 +1,4 @@
-package org.programmers.pb340211;
+package algorithm.programmers.pb340211;
 
 import java.util.Arrays;
 import java.util.stream.Collectors;

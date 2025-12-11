@@ -1,5 +1,6 @@
-package org.programmers.pb340211;
+package func.programmers.pb340211;
 
+import algorithm.programmers.pb340211.Solution;
 import org.junit.jupiter.api.Test;
 
 import java.util.stream.Stream;
