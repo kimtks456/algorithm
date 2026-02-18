@@ -32,14 +32,7 @@ class Solution {
         
         for (String req : requests) {
             answer -= remove(req);
-            // for (int[] m : access) {
-            //     sout(m);
-            // }
-            // for (char[] x : map) {
-            //     sout(x);
-            // }
         }
-        // sout(map);
         
         return answer;
     }
@@ -48,6 +41,7 @@ class Solution {
         int removed = 0;
         int n = map.length, m = map[0].length;
         List<Pos> update = new ArrayList<>();
+        
         if (req.length() == 1) {
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < m; j++) {
@@ -55,14 +49,6 @@ class Solution {
                     if (access[i][j] == 1 && req.charAt(0) == map[i][j]) {
                         map[i][j] = ' ';
                         removed += 1;
-
-                        // 접근가능 갱신
-                        // for (int k = 0; k < 4; k++) {
-                        //     int ni = i + di[k], nj = j + dj[k];
-                        //     if (0 < ni && ni < n && 0 < nj && nj < m) {
-                        //         update.add(new Pos(ni, nj));
-                        //     }
-                        // }
                     }
                 }
             }
@@ -71,7 +57,6 @@ class Solution {
         for (Pos u : update) {
             access[u.i][u.j] = 1;
         }
-            
         
         if (req.length() == 2) {
             List<Pos> updated = new ArrayList<>();
@@ -82,33 +67,14 @@ class Solution {
                         if (req.charAt(0) == map[i][j]) {
                             map[i][j] = ' ';
                             removed += 1;
-                            // updated.add(new Pos(i, j));
-                            
-
-                            // // 접근가능 갱신
-                            // for (int k = 0; k < 4; k++) {
-                            //     int ni = i + di[k], nj = j + dj[k];
-                            //     if (0 < ni && ni < n && 0 < nj && nj < m &&
-                            //         access[i][j] == 1) {
-                            //         access[ni][nj] = 1;
-                            //     }
-                            // }
                         }
                     }
                 }
             }
-            
-            
-            // for (Pos p : updated) {
-            // 	update(p.i, p.j);    
-            // }
-            // sout(updated);
-            
         }
         
         update();
         
-        sout(removed);
         return removed;
     }
     
@@ -134,14 +100,15 @@ class Solution {
                 access[cur.i][cur.j] = 1;
                 for (int i = 0; i < 4; i++) {
                 	int ni = cur.i + di[i], nj = cur.j + dj[i];
-                    if (0 < ni && ni < n && 0 < nj && nj < m) {
-                    	access[ni][nj] = 1;
-                        if (visited[ni][nj]) continue;
+                    if (!(0 < ni && ni < n && 0 < nj && nj < m)) continue;
+                    
+                    access[ni][nj] = 1;
                         
-                        if (map[ni][nj] == ' ') {
-                            stack.push(new Pos(ni, nj));
-                            visited[ni][nj] = true;
-                        }
+                    if (visited[ni][nj]) continue;
+                        
+                    if (map[ni][nj] == ' ') {
+                        stack.push(new Pos(ni, nj));
+                        visited[ni][nj] = true;
                     }
                 }
             }
