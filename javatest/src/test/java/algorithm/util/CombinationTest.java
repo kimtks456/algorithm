@@ -23,7 +23,7 @@ class CombinationTest {
         PrintUtil.print(data);
         result.forEach(PrintUtil::print);
 
-        assertThat(result).hasSize(5 * 4 / 2); // 5C3 = 5!3!/(5-3)!
+        assertThat(result).hasSize(5 * 4 / 2); // 5C3 = 5!/3!(5-3)!
     }
 
     static Stream<Arguments> bridge() {
