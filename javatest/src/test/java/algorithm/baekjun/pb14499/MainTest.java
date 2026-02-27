@@ -38,7 +38,7 @@ class MainTest extends BaekjunTestBase {
                 ),
 
                 Arguments.of(
-                """
+                        """
                         3 3 1 1 9
                         1 2 3
                         4 0 5
@@ -59,7 +59,7 @@ class MainTest extends BaekjunTestBase {
                 ),
 
                 Arguments.of(
-                """
+                        """
                         2 2 0 0 16
                         0 2
                         3 4
@@ -73,7 +73,7 @@ class MainTest extends BaekjunTestBase {
                 ),
 
                 Arguments.of(
-                """
+                        """
                         3 3 0 0 16
                         0 1 2
                         3 4 5
