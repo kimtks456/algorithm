@@ -9,7 +9,6 @@ public class Main {
     int[][] map;
     // 첫번째=행(0)/열(1)방향, 두번째=오른쪽(1)/왼쪽(-1)
     int[][] directions = {{0, 1}, {0, -1}, {1, 1}, {1, -1}};
-//    int[][] directions = {{1, 1}, {0, -1}};
     int answer = 0;
 
     public static void main(String[] args) throws IOException {
@@ -18,8 +17,6 @@ public class Main {
 
     public void solve() throws IOException {
         input();
-//        sout(map);
-//        sout("START");
         bt(0, map);
         System.out.println(answer);
     }
@@ -34,20 +31,8 @@ public class Main {
 
         for (int i = 0; i < directions.length; i++) {
             int[][] newMap = copyMap(map);
-//            sout("이동전\n");
-//            print(newMap);
             move(directions[i][0], directions[i][1], newMap);
-//            sout(new Object[] {directions[i], count, "이동후\n" });
-//            print(newMap);
             bt(count + 1, newMap);
-//            map = copyMap(origin);
-//            sout("복구");
-//            sout(map);
-        }
-    }
-    private void print(int[][] map) {
-        for (int[] row : map) {
-            System.out.println(Arrays.toString(row));
         }
     }
 
@@ -72,18 +57,12 @@ public class Main {
         }
     }
 
-    // Queue 또는 Stack에서 2개씩 빼서 저장
+    // 하나씩 뽑아서 더해서 넣거나, 그냥 넣기(방향에 따라 Queue 또는 Stack 사용)
     private void acc(int[] arr, int dir) {
         Deque<Integer> deq = new ArrayDeque<>();
         List<Integer> list = new ArrayList<>();
 
         // 숫자들만 뽑기
-//        for (int item : arr) {
-//            // 왼쪽밀기 -> FIFO -> queue
-//            if (dir == -1 && item != 0) deq.offer(item);
-//            // 오른쪽밀기 -> LIFO -> stack
-//            if (dir == 1 && item != 0) deq.push(item);
-//        }
         for (int i = 0; i < N; i++) {
             int item = arr[i];
             if (dir == -1 && item != 0) deq.offer(arr[i]);
@@ -109,38 +88,6 @@ public class Main {
                 }
             }
         }
-//        sout(arr);
-//        sout(list);
-//        sout("\n");
-
-//        // 왼/오른쪽으로 밀기
-//        while (!deq.isEmpty()) {
-//            if (deq.size() >= 2) {
-//                int a, b;
-//                // Queue
-//                if (dir == -1) {
-//                    a = deq.poll();
-//                    b = deq.poll();
-//                }
-//                // Stack
-//                else {
-//                    a = deq.pop();
-//                    b = deq.pop();
-//                }
-//
-//                if (a == b) list.add(a + b);
-//                else {
-//                    list.add(a);
-//                    list.add(b);
-//                }
-//                continue;
-//            }
-//
-//            while (!deq.isEmpty()) {
-//                list.add(deq.poll());
-//            }
-//
-//        }
 
         // 실제 배열에 복사
         int n = list.size();
