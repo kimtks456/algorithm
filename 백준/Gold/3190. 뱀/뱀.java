@@ -37,8 +37,6 @@ public class Main {
         for (String[] cmd : cmds) {
             int time = Integer.parseInt(cmd[0]);
 
-
-
             // 방향이동 전까지 해당 방향으로 이동
             while (time - nowTime > 0 && !flag) {
                 flag = move();
@@ -52,24 +50,12 @@ public class Main {
         }
 
         while (!flag) {
-//            System.out.println("추가이동 시작");
-//            for (int[] row : map) {
-//                sout(row);
-//            }
-//            sout(new Object[] {"방향", nowDir});
-//            sout("\n");
-
             flag = move();
             if (flag) return;
         }
     }
 
     private boolean move() {
-//        for (int[] row : map) {
-//            sout(row);
-//        }
-//        sout(new Object[] {"시간", nowTime});
-//        sout("\n");
         nowTime++;
 
         // 다음 좌표
@@ -78,7 +64,6 @@ public class Main {
 
         // 벽이거나 몸통이면 종료
         if (!(0 <= y && y < N && 0 <= x && x < N) || map[y][x] == 2) {
-//            System.out.println("끝남=" + y + " " + x );
             System.out.println(nowTime);
             return true;
         }
