@@ -49,7 +49,7 @@ public class Main {
             else nowDir = (1 + nowDir) % 4;
         }
 
-        while (!flag) {
+        while (true) {
             flag = move();
             if (flag) return;
         }
