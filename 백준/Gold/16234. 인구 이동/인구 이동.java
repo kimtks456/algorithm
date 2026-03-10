@@ -13,7 +13,6 @@ public class Main {
     boolean[][] visited;
     int answer;
 
-
     public static void main(String[] args) throws IOException {
         new Main().solve();
     }
@@ -40,20 +39,12 @@ public class Main {
             }
 
             if (!sumCoord.isEmpty()) {
-//                for(int[] row : map) sout(row);
-//                sout(new Object[] {answer});
-//                for (boolean[] row : visited) sout(row);
-
                 for (Map.Entry<List<int[]>, Integer> entry : sumCoord.entrySet()) {
                     int avgSum = entry.getValue() / entry.getKey().size();
                     for (int[] coord : entry.getKey()) {
                         map[coord[0]][coord[1]] = avgSum;
                     }
                 }
-
-//                sout("\n반영후");
-//                for(int[] row : map) sout(row);
-
                 answer++;
             }
             else break;
@@ -85,8 +76,6 @@ public class Main {
                 sum += map[ni][nj];
             }
         }
-
-
 
         return sum;
     }
