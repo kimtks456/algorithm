@@ -25,19 +25,9 @@ public class Main {
         int fisherIdx = -1;
 
         while (fisherIdx < C - 1) {
-            // 낚시꾼 이동
             fisherIdx++;
-
-            // 낚시
             fishing(fisherIdx);
-//            sout("이동전" + fisherIdx);
-//            for (Shark[] row : map) sout(row);
-//            sout("이동후");
-
-            // 상어 이동
             move();
-
-//            for (Shark[] row : map) sout(row);
         }
 
         System.out.println(answer);
@@ -86,7 +76,6 @@ public class Main {
         }
 
         // 이동한 상어 처리
-//        sout(sharks);
         for (Shark now : sharks) {
             Shark target = map[now.r][now.c];
             // 상어 있다면, 큰 상어가 덮어씀
@@ -107,7 +96,6 @@ public class Main {
             }
         }
     }
-
 
     private void input() throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -140,8 +128,7 @@ public class Main {
 
         @Override
         public String toString() {
-            return "[" + r + "," + c + "]" + s + "/" + d + "/" + z;
-//            return s + "/" + d + "/" + z;
+            return s + "/" + d + "/" + z;
         }
     }
 
