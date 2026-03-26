@@ -22,20 +22,13 @@ public class Main {
 
     public void solve() throws IOException {
         input();
-//        sout(pieces);
-//        sout(stacks);
-//        sout("시작");
 
         while (answer <= 1000) {
-//            sout(answer);
             boolean isEnd = false;
 
             for (int i = 0; i < K; i++) {
                 isEnd = move(i);
                 if (isEnd) break;
-//                sout("after");
-//                sout(pieces);
-//                sout(stacks);
             }
             if (isEnd) break;
             answer++;
@@ -171,6 +164,4 @@ public class Main {
             System.out.println(temp);
         };
     }
-
-
 }
