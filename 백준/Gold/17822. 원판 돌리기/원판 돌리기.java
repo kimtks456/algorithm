@@ -13,7 +13,6 @@ public class Main {
     }
 
     public void solve() throws IOException {
-        int answer = 0;
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         input(br);
 
@@ -30,13 +29,9 @@ public class Main {
             // 수 지우기
             erase();
         }
-//        sout(plates);
 
         // 원판 수 합 구하기
-        answer = getSum()[0];
-
-
-        System.out.println(answer);
+        System.out.println(getSum()[0]);
     }
 
     private void erase() {
