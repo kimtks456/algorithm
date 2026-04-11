@@ -28,7 +28,7 @@ void dfs(string cur,
         if (isValid(cur, str) && visited.count(str) == 0) {
             visited.insert(str);
             dfs(str, target, dist + 1, words, visited);
-            visited.erase(str);
+            // visited.erase(str);
         }
     }
 }
